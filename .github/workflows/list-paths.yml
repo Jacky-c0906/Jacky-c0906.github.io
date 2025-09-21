@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -23,50 +25,69 @@ jobs:
             group="$2"
             title="$(basename "$file")"
             file_path="${file#./}"
-            # 转义 JSON 特殊字符（双引号与反斜杠）
-            title_esc=$(printf '%s' "$title" | sed 's/\\/\\\\/g; s/"/\\"/g')
-            file_esc=$(printf '%s' "$file_path" | sed 's/\\/\\\\/g; s/"/\\"/g')
-            group_esc=$(printf '%s' "$group" | sed 's/\\/\\\\/g; s/"/\\"/g')
-            echo "  {\"title\":\"$title_esc\",\"path\":\"$file_esc\",\"group\":\"$group_esc\"}," >> "$tmp"
+            # 转义
+            esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+            echo "  {\"title\":\"$(esc "$title")\",\"path\":\"$(esc "$file_path")\",\"group\":\"$(esc "$group")\"}," >> "$tmp"
           }
 
-          scan_dir () {
-            dir="$1"
-            group="$2"
-            [ -z "$group" ] && group="$dir"
-            if [ -d "$dir" ]; then
+          list_media () {
+            find "$1" -type f \( -iname "*.mp3" -o -iname "*.wav" -o -iname "*.m4a" -o -iname "*.flac" -o -iname "*.ogg" \) -print0 | sort -z
+          }
+
+          # 方案1：扫描 audio/ 下的子目录，子目录名作为分组（如 jun_music/、chen_music/土 等）
+          if [ -d "audio" ]; then
+            while IFS= read -r -d '' f; do
+              dir="$(dirname "$f")"
+              # 以 audio/之后的第一级或前两级作为分组
+              rel="${dir#audio/}"
+              # 分组规则：如果是 chen_music/土/xxx.mp3 就显示 "臣 · 土"
+              if [[ "$rel" == chen_music/*/* ]]; then
+                wux="$(echo "$rel" | cut -d/ -f2)"   # 土/木/水/火/金
+                group="臣 · $wux"
+              else
+                first="$(echo "$rel" | cut -d/ -f1)"
+                case "$first" in
+                  GSMT) group="GSMT" ;;
+                  jun_music) group="君" ;;
+                  shi_music) group="使" ;;
+                  zuo_music) group="佐" ;;
+                  chen_music) group="臣" ;;
+                  *) group="$first" ;;
+                esac
+              fi
+              add_entry "$f" "$group"
+            done < <(list_media "audio")
+          fi
+
+          # 方案2：如果你还有旧结构，保留兼容扫描
+          for root in "GSMT" "jun_music" "shi_music" "zuo_music"; do
+            if [ -d "$root" ]; then
               while IFS= read -r -d '' f; do
+                case "$root" in
+                  GSMT) group="GSMT" ;;
+                  jun_music) group="君" ;;
+                  shi_music) group="使" ;;
+                  zuo_music) group="佐" ;;
+                esac
                 add_entry "$f" "$group"
-              done < <(find "$dir" -type f \( -iname "*.mp3" -o -iname "*.wav" -o -iname "*.m4a" \) -print0 | sort -z)
+              done < <(list_media "$root")
             fi
-          }
+          done
 
-          # 顶层目录
-          scan_dir "GSMT" "GSMT"
-          scan_dir "jun_music" "君"
-          scan_dir "shi_music" "使"
-          scan_dir "zuo_music" "佐"
-
-          # chen_music 按五行子目录分组
           if [ -d "chen_music" ]; then
             for sub in chen_music/*; do
-              if [ -d "$sub" ]; then
-                name="$(basename "$sub")"   # 土/木/水/火/金
-                while IFS= read -r -d '' f; do
-                  add_entry "$f" "臣 · $name"
-                done < <(find "$sub" -type f \( -iname "*.mp3" -o -iname "*.wav" -o -iname "*.m4a" \) -print0 | sort -z)
-              fi
+              [ -d "$sub" ] || continue
+              name="$(basename "$sub")"
+              while IFS= read -r -d '' f; do
+                add_entry "$f" "臣 · $name"
+              done < <(list_media "$sub")
             done
           fi
 
           # 去掉最后一个逗号并收尾
           sed -i '$ s/,$//' "$tmp" || true
           echo "]" >> "$tmp"
-
           mv "$tmp" data/tracks.json
-          echo "Generated data/tracks.json:"
-          wc -c data/tracks.json
-          head -n 5 data/tracks.json || true
 
       - name: Commit tracks.json
         run: |
