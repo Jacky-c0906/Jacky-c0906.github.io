@@ -1,0 +1,81 @@
+name: Export audio paths to data/tracks.json
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate tracks.json
+        shell: bash
+        run: |
+          set -e
+          mkdir -p data
+          tmp=tracks.tmp.json
+          echo "[" > "$tmp"
+
+          add_entry () {
+            file="$1"
+            group="$2"
+            title="$(basename "$file")"
+            file_path="${file#./}"
+            # 转义 JSON 特殊字符（双引号与反斜杠）
+            title_esc=$(printf '%s' "$title" | sed 's/\\/\\\\/g; s/"/\\"/g')
+            file_esc=$(printf '%s' "$file_path" | sed 's/\\/\\\\/g; s/"/\\"/g')
+            group_esc=$(printf '%s' "$group" | sed 's/\\/\\\\/g; s/"/\\"/g')
+            echo "  {\"title\":\"$title_esc\",\"path\":\"$file_esc\",\"group\":\"$group_esc\"}," >> "$tmp"
+          }
+
+          scan_dir () {
+            dir="$1"
+            group="$2"
+            [ -z "$group" ] && group="$dir"
+            if [ -d "$dir" ]; then
+              while IFS= read -r -d '' f; do
+                add_entry "$f" "$group"
+              done < <(find "$dir" -type f \( -iname "*.mp3" -o -iname "*.wav" -o -iname "*.m4a" \) -print0 | sort -z)
+            fi
+          }
+
+          # 顶层目录
+          scan_dir "GSMT" "GSMT"
+          scan_dir "jun_music" "君"
+          scan_dir "shi_music" "使"
+          scan_dir "zuo_music" "佐"
+
+          # chen_music 按五行子目录分组
+          if [ -d "chen_music" ]; then
+            for sub in chen_music/*; do
+              if [ -d "$sub" ]; then
+                name="$(basename "$sub")"   # 土/木/水/火/金
+                while IFS= read -r -d '' f; do
+                  add_entry "$f" "臣 · $name"
+                done < <(find "$sub" -type f \( -iname "*.mp3" -o -iname "*.wav" -o -iname "*.m4a" \) -print0 | sort -z)
+              fi
+            done
+          fi
+
+          # 去掉最后一个逗号并收尾
+          sed -i '$ s/,$//' "$tmp" || true
+          echo "]" >> "$tmp"
+
+          mv "$tmp" data/tracks.json
+          echo "Generated data/tracks.json:"
+          wc -c data/tracks.json
+          head -n 5 data/tracks.json || true
+
+      - name: Commit tracks.json
+        run: |
+          if [ -n "$(git status --porcelain data/tracks.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/tracks.json
+            git commit -m "update data/tracks.json from CI"
+            git push
+          else
+            echo "No changes in data/tracks.json"
+          fi
