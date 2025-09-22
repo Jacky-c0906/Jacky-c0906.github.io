@@ -1,172 +1,27 @@
 [
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/GSMT合成音乐/",
-    "key": "GSMT合成音乐/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/土/",
-    "key": "chen_music/土/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/木/",
-    "key": "chen_music/木/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/水/",
-    "key": "chen_music/水/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/火/",
-    "key": "chen_music/火/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/金/",
-    "key": "chen_music/金/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/jun_music/",
-    "key": "jun_music/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/shi_music/",
-    "key": "shi_music/"
-  },
-  {
-    "title": "",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/",
-    "key": "zuo_music/"
-  },
-  {
-    "title": "-SYBC流水与蛙.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/-SYBC流水与蛙.mp3",
-    "key": "zuo_music/佐音/-SYBC流水与蛙.mp3"
-  },
-  {
-    "title": "A蛐蛐叫声.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/A蛐蛐叫声.mp3",
-    "key": "zuo_music/佐音/A蛐蛐叫声.mp3"
-  },
-  {
-    "title": "B1柔和的海浪声8-47.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/B1柔和的海浪声8-47.mp3",
-    "key": "zuo_music/佐音/B1柔和的海浪声8-47.mp3"
-  },
-  {
-    "title": "F+虫鸣.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/F+虫鸣.mp3",
-    "key": "zuo_music/佐音/F+虫鸣.mp3"
-  },
-  {
-    "title": "H山间流水声.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/H山间流水声.mp3",
-    "key": "zuo_music/佐音/H山间流水声.mp3"
-  },
-  {
-    "title": "J林中蝉鸣.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/J林中蝉鸣.mp3",
-    "key": "zuo_music/佐音/J林中蝉鸣.mp3"
-  },
-  {
-    "title": "K1晨鸟 (纯自然声音).mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/K1晨鸟 (纯自然声音).mp3",
-    "key": "zuo_music/佐音/K1晨鸟 (纯自然声音).mp3"
-  },
-  {
-    "title": "K2鸟鸣.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/K2鸟鸣.mp3",
-    "key": "zuo_music/佐音/K2鸟鸣.mp3"
-  },
-  {
-    "title": "土1.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/土/土/土1.mp3",
-    "key": "chen_music/土/土/土1.mp3"
-  },
-  {
-    "title": "土2.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/土/土/土2.mp3",
-    "key": "chen_music/土/土/土2.mp3"
-  },
-  {
-    "title": "壁炉燃烧的木头噼里啪啦响.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/壁炉燃烧的木头噼里啪啦响.mp3",
-    "key": "zuo_music/佐音/壁炉燃烧的木头噼里啪啦响.mp3"
-  },
-  {
-    "title": "木1.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/木/木/木1.mp3",
-    "key": "chen_music/木/木/木1.mp3"
-  },
-  {
-    "title": "木2.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/木/木/木2.mp3",
-    "key": "chen_music/木/木/木2.mp3"
-  },
-  {
-    "title": "森林白天的鸟微风轻轻吹.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/zuo_music/佐音/森林白天的鸟微风轻轻吹.mp3",
-    "key": "zuo_music/佐音/森林白天的鸟微风轻轻吹.mp3"
-  },
-  {
-    "title": "水1.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/水/水/水1.mp3",
-    "key": "chen_music/水/水/水1.mp3"
-  },
-  {
-    "title": "水2.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/水/水/水2.mp3",
-    "key": "chen_music/水/水/水2.mp3"
-  },
-  {
-    "title": "水3.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/水/水/水3.mp3",
-    "key": "chen_music/水/水/水3.mp3"
-  },
-  {
-    "title": "火1.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/火/火/火1.mp3",
-    "key": "chen_music/火/火/火1.mp3"
-  },
-  {
-    "title": "火2.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/火/火/火2.mp3",
-    "key": "chen_music/火/火/火2.mp3"
-  },
-  {
-    "title": "火3.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/火/火/火3.mp3",
-    "key": "chen_music/火/火/火3.mp3"
-  },
-  {
-    "title": "调心.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/GSMT合成音乐/composed_audio/调心.mp3",
-    "key": "GSMT合成音乐/composed_audio/调心.mp3"
-  },
-  {
-    "title": "调肾.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/GSMT合成音乐/composed_audio/调肾.mp3",
-    "key": "GSMT合成音乐/composed_audio/调肾.mp3"
-  },
-  {
-    "title": "金1.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/金/金/金1.mp3",
-    "key": "chen_music/金/金/金1.mp3"
-  },
-  {
-    "title": "金2.mp3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/chen_music/金/金/金2.mp3",
-    "key": "chen_music/金/金/金2.mp3"
-  },
-  {
-    "title": "颂钵音.MP3",
-    "url": "https://music-gsmt.oss-cn-guangzhou.aliyuncs.com/shi_music/使音/颂钵音.MP3",
-    "key": "shi_music/使音/颂钵音.MP3"
-  }
+  {"title":"调心.mp3","path":"audio/GSMT/调心.mp3","group":"GSMT"},
+  {"title":"调肾.mp3","path":"audio/GSMT/调肾.mp3","group":"GSMT"},
+  {"title":"土1.mp3","path":"audio/chen_music/土/土1.mp3","group":"臣"},
+  {"title":"土2.mp3","path":"audio/chen_music/土/土2.mp3","group":"臣"},
+  {"title":"木1.mp3","path":"audio/chen_music/木/木1.mp3","group":"臣"},
+  {"title":"木2.mp3","path":"audio/chen_music/木/木2.mp3","group":"臣"},
+  {"title":"水1.mp3","path":"audio/chen_music/水/水1.mp3","group":"臣"},
+  {"title":"水2.mp3","path":"audio/chen_music/水/水2.mp3","group":"臣"},
+  {"title":"水3.mp3","path":"audio/chen_music/水/水3.mp3","group":"臣"},
+  {"title":"火1.mp3","path":"audio/chen_music/火/火1.mp3","group":"臣"},
+  {"title":"火2.mp3","path":"audio/chen_music/火/火2.mp3","group":"臣"},
+  {"title":"火3.mp3","path":"audio/chen_music/火/火3.mp3","group":"臣"},
+  {"title":"金1.mp3","path":"audio/chen_music/金/金1.mp3","group":"臣"},
+  {"title":"金2.mp3","path":"audio/chen_music/金/金2.mp3","group":"臣"},
+  {"title":"心经.mp3","path":"audio/jun_music/心经.mp3","group":"君"},
+  {"title":"肝经.mp3","path":"audio/jun_music/肝经.mp3","group":"君"},
+  {"title":"肺经.mp3","path":"audio/jun_music/肺经.mp3","group":"君"},
+  {"title":"肾经.mp3","path":"audio/jun_music/肾经.mp3","group":"君"},
+  {"title":"脾经.mp3","path":"audio/jun_music/脾经.mp3","group":"君"},
+  {"title":"颂钵音.MP3","path":"audio/shi_music/颂钵音.MP3","group":"使"},
+  {"title":"A蛐蛐叫声.mp3","path":"audio/zuo_music/A蛐蛐叫声.mp3","group":"佐"},
+  {"title":"B1柔和的海浪声8-47.mp3","path":"audio/zuo_music/B1柔和的海浪声8-47.mp3","group":"佐"},
+  {"title":"F+虫鸣.mp3","path":"audio/zuo_music/F+虫鸣.mp3","group":"佐"},
+  {"title":"壁炉燃烧的木头噼里啪啦响.mp3","path":"audio/zuo_music/壁炉燃烧的木头噼里啪啦响.mp3","group":"佐"},
+  {"title":"森林白天的鸟微风轻轻吹.mp3","path":"audio/zuo_music/森林白天的鸟微风轻轻吹.mp3","group":"佐"}
 ]
