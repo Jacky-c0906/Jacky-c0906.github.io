@@ -24,12 +24,12 @@
     header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.6)),var(--bg);backdrop-filter:blur(6px);border-bottom:2px solid var(--gold);box-shadow:0 2px 0 rgba(0,0,0,.03)}
     .wrap{max-width:1100px;margin:auto;padding:14px 16px}
     .title{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-    .seal{width:40px;height:40px;border:2px solid var(--ink);color:var(--ink);display:grid;place-items:center;font-weight:700;letter-spacing:.2em;background:linear-gradient(135deg,rgba(0,0,0,.06),透明);border-radius:6px}
+    .seal{width:40px;height:40px;border:2px solid var(--ink);color:var(--ink);display:grid;place-items:center;font-weight:700;letter-spacing:.2em;background:linear-gradient(135deg,rgba(0,0,0,.06),transparent);border-radius:6px}
     .brand{font-family:"STKaiti","Kaiti SC","KaiTi","Noto Serif SC",serif;font-size:28px;letter-spacing:.1em;color:var(--ink-2)}
     .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
     @media (max-width:900px){.grid{grid-template-columns:1fr}}
     .panel{background:var(--paper);border:2px solid var(--gold);border-radius:12px;overflow:hidden;box-shadow:0 10px 20px rgba(0,0,0,.05)}
-    .panel-head{padding:10px 14px;background:linear-gradient(90deg,rgba(199,168,110,.25),rgba(199,168,110,.08) 40%,透明),linear-gradient(180deg,rgba(255,255,255,.6),透明);font-family:"STKaiti","Kaiti SC","KaiTi",serif;color:var(--jade-2);display:flex;align-items:center;gap:10px;justify-content:space-between;border-bottom:1px dashed var(--gold)}
+    .panel-head{padding:10px 14px;background:linear-gradient(90deg,rgba(199,168,110,.25),rgba(199,168,110,.08) 40%,transparent),linear-gradient(180deg,rgba(255,255,255,.6),transparent);font-family:"STKaiti","Kaiti SC","KaiTi",serif;color:var(--jade-2);display:flex;align-items:center;gap:10px;justify-content:space-between;border-bottom:1px dashed var(--gold)}
     .tabs{display:flex;gap:8px;flex-wrap:wrap;padding:10px}
     .tab{cursor:pointer;user-select:none;padding:6px 12px 6px 10px;border:1px solid var(--jade-2);color:var(--jade-2);border-radius:0 10px 10px 0;position:relative;background:rgba(18,138,126,.08)}
     .tab:before{content:"";position:absolute;left:-10px;top:-1px;bottom:-1px;width:12px;background:linear-gradient(180deg,var(--jade),var(--jade-2));border:1px solid var(--jade-2);border-right:none;border-radius:6px 0 0 6px}
@@ -90,7 +90,8 @@
   <footer>注：GitHub 代码页不预览大文件，但此页可正常播放。</footer>
 
   <script>
-    const JSON_URL = "data/oss_tracks.json"; // 你的 JSON 路径
+    // 改成你的实际 JSON 路径
+    const JSON_URL = "data/tracks.json";
 
     const GROUP_MAP = {
       "GSMT合成音乐": "GSMT",
@@ -141,10 +142,13 @@
         if (!res.ok) throw new Error("HTTP " + res.status);
         const raw = await res.json();
 
+        // 兼容两种数据来源：
+        // - 你提供的格式：[{title, url, key}, ...]
+        // - 简化格式：[{title, url}, ...]
         allTracks = (Array.isArray(raw) ? raw : [])
           .filter(item => item && item.url)
           .filter(item => !isDir(item))
-          .map((item, i) => {
+          .map((item) => {
             const prefix = getTopPrefix(item);
             const group = GROUP_MAP[prefix] || "未分组";
             const title = item.title && item.title.trim()
