@@ -24,13 +24,12 @@
     header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.6)),var(--bg);backdrop-filter:blur(6px);border-bottom:2px solid var(--gold);box-shadow:0 2px 0 rgba(0,0,0,.03)}
     .wrap{max-width:1100px;margin:auto;padding:14px 16px}
     .title{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-    .seal{width:40px;height:40px;border:2px solid var(--ink);color:var(--ink);display:grid;place-items:center;font-weight:700;letter-spacing:.2em;background:linear-gradient(135deg,rgba(0,0,0,.06),transparent);border-radius:6px}
+    .seal{width:40px;height:40px;border:2px solid var(--ink);color:var(--ink);display:grid;place-items:center;font-weight:700;letter-spacing:.2em;background:linear-gradient(135deg,rgba(0,0,0,.06),透明);border-radius:6px}
     .brand{font-family:"STKaiti","Kaiti SC","KaiTi","Noto Serif SC",serif;font-size:28px;letter-spacing:.1em;color:var(--ink-2)}
-    .subtitle{color:var(--muted);font-size:12px}
     .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
     @media (max-width:900px){.grid{grid-template-columns:1fr}}
     .panel{background:var(--paper);border:2px solid var(--gold);border-radius:12px;overflow:hidden;box-shadow:0 10px 20px rgba(0,0,0,.05)}
-    .panel-head{padding:10px 14px;background:linear-gradient(90deg,rgba(199,168,110,.25),rgba(199,168,110,.08) 40%,transparent),linear-gradient(180deg,rgba(255,255,255,.6),transparent);font-family:"STKaiti","Kaiti SC","KaiTi",serif;color:var(--jade-2);display:flex;align-items:center;gap:10px;justify-content:space-between;border-bottom:1px dashed var(--gold)}
+    .panel-head{padding:10px 14px;background:linear-gradient(90deg,rgba(199,168,110,.25),rgba(199,168,110,.08) 40%,透明),linear-gradient(180deg,rgba(255,255,255,.6),透明);font-family:"STKaiti","Kaiti SC","KaiTi",serif;color:var(--jade-2);display:flex;align-items:center;gap:10px;justify-content:space-between;border-bottom:1px dashed var(--gold)}
     .tabs{display:flex;gap:8px;flex-wrap:wrap;padding:10px}
     .tab{cursor:pointer;user-select:none;padding:6px 12px 6px 10px;border:1px solid var(--jade-2);color:var(--jade-2);border-radius:0 10px 10px 0;position:relative;background:rgba(18,138,126,.08)}
     .tab:before{content:"";position:absolute;left:-10px;top:-1px;bottom:-1px;width:12px;background:linear-gradient(180deg,var(--jade),var(--jade-2));border:1px solid var(--jade-2);border-right:none;border-radius:6px 0 0 6px}
@@ -56,7 +55,6 @@
       <div class="seal">状态</div>
       <div>
         <div class="brand">状态导向音乐</div>
-        <div class="subtitle">取音如竹，和气若兰 · 自动读取 data/tracks.json</div>
       </div>
     </div>
   </header>
@@ -66,7 +64,7 @@
       <section class="panel">
         <div class="panel-head"><div>曲目清单</div></div>
         <div class="tabs" id="filters"></div>
-        <input id="q" class="search" placeholder="检索标题或路径…" />
+        <input id="q" class="search" placeholder="检索标题、链接或路径…" />
         <div class="list" id="trackList"></div>
         <div class="empty" id="emptyMsg" style="display:none">无相应曲目</div>
       </section>
@@ -83,7 +81,7 @@
           <span class="chip" id="loopBtn">循环：关</span>
         </div>
         <div style="padding:0 12px 12px">
-          <audio id="player" controls preload="none"></audio>
+          <audio id="player" controls preload="none" crossorigin="anonymous"></audio>
         </div>
       </section>
     </div>
@@ -92,11 +90,37 @@
   <footer>注：GitHub 代码页不预览大文件，但此页可正常播放。</footer>
 
   <script>
+    const JSON_URL = "data/oss_tracks.json"; // 你的 JSON 路径
+
+    const GROUP_MAP = {
+      "GSMT合成音乐": "GSMT",
+      "chen_music": "臣",
+      "shi_music": "使",
+      "zuo_music": "佐",
+      "jun_music": "君"
+    };
+
+    function isDir(item){
+      const p = String(item.url || item.key || "");
+      return p.endsWith("/");
+    }
+
+    function getTopPrefix(item){
+      const src = String(item.key || item.url || "");
+      const parts = src.replace(/^https?:\/\/[^/]+\//, "").split("/");
+      return parts[0] || "";
+    }
+
+    function getFileName(urlOrKey){
+      const s = String(urlOrKey || "");
+      const seg = s.split("/").filter(Boolean);
+      return seg[seg.length-1] || s;
+    }
+
     let allTracks = [];
     let viewTracks = [];
     let currentGroup = "全部";
     let currentIndex = -1;
-    let loop = false;
 
     const filtersEl = document.getElementById("filters");
     const listEl = document.getElementById("trackList");
@@ -109,16 +133,36 @@
     const nextBtn = document.getElementById("nextBtn");
     const loopBtn = document.getElementById("loopBtn");
 
+    let loop = false;
+
     async function load() {
       try {
-        const res = await fetch("data/tracks.json?ts=" + Date.now());
-        if (!res.ok) throw new Error("加载失败");
-        allTracks = await res.json();
+        const res = await fetch(JSON_URL + "?ts=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const raw = await res.json();
+
+        allTracks = (Array.isArray(raw) ? raw : [])
+          .filter(item => item && item.url)
+          .filter(item => !isDir(item))
+          .map((item, i) => {
+            const prefix = getTopPrefix(item);
+            const group = GROUP_MAP[prefix] || "未分组";
+            const title = item.title && item.title.trim()
+              ? item.title.trim()
+              : getFileName(item.key || item.url);
+            return {
+              title,
+              url: item.url,
+              key: item.key || "",
+              group
+            };
+          });
+
         renderFilters();
         renderList();
       } catch (e) {
         emptyMsg.style.display = "block";
-        emptyMsg.textContent = "加载 data/tracks.json 失败：" + e.message;
+        emptyMsg.textContent = "加载 " + JSON_URL + " 失败：" + e.message;
       }
     }
 
@@ -126,11 +170,11 @@
       const groups = ["全部", ...[...new Set(allTracks.map(t => t.group))].sort((a,b)=>a.localeCompare(b,"zh"))];
       filtersEl.innerHTML = "";
       groups.forEach(g=>{
-        const s = document.createElement("div");
-        s.textContent = g;
-        s.className = "tab" + (currentGroup===g?" active":"");
-        s.onclick = ()=>{ currentGroup=g; renderFilters(); renderList(); };
-        filtersEl.appendChild(s);
+        const tab = document.createElement("div");
+        tab.textContent = g;
+        tab.className = "tab" + (currentGroup===g?" active":"");
+        tab.onclick = ()=>{ currentGroup=g; renderFilters(); renderList(); };
+        filtersEl.appendChild(tab);
       });
     }
 
@@ -140,8 +184,14 @@
       const keyword = q.value?.trim();
       if(keyword) {
         const k = keyword.toLowerCase();
-        data = data.filter(t => (t.title||"").toLowerCase().includes(k) || (t.path||"").toLowerCase().includes(k));
+        data = data.filter(t =>
+          (t.title||"").toLowerCase().includes(k) ||
+          (t.url||"").toLowerCase().includes(k) ||
+          (t.key||"").toLowerCase().includes(k) ||
+          (t.group||"").toLowerCase().includes(k)
+        );
       }
+
       viewTracks = data;
       countMeta.textContent = "共 " + data.length + " 首";
       listEl.innerHTML = "";
@@ -151,8 +201,8 @@
       data.forEach((t,i)=>{
         const btn = document.createElement("button");
         btn.className = "btn";
-        btn.innerHTML = `<span class="dot"></span><span>${t.title || t.path}</span><span class="meta">· ${t.group||""}</span>`;
-        btn.title = t.path;
+        btn.innerHTML = `<span class="dot"></span><span>${t.title}</span><span class="meta">· ${t.group}</span>`;
+        btn.title = t.key || t.url;
         btn.onclick = ()=> playIndex(i);
         listEl.appendChild(btn);
       });
@@ -163,9 +213,9 @@
       currentIndex = i;
       const t = viewTracks[i];
       if(!t) return;
-      player.src = encodeURI(t.path);
+      player.src = t.url;
       player.play().catch(()=>{});
-      now.textContent = "正奏： " + (t.title || "") + "  (" + t.path + ")";
+      now.textContent = "正奏： " + (t.title || "") + "  (" + (t.key || t.url) + ")";
       const el = listEl.children[i];
       if(el && el.scrollIntoView) el.scrollIntoView({block:"nearest"});
     }
