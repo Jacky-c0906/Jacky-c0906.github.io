@@ -90,7 +90,7 @@
   <footer>注：GitHub 代码页不预览大文件，但此页可正常播放。</footer>
 
   <script>
-    // 改成你的实际 JSON 路径
+    // 严格使用你给定的 JSON 格式与路径
     const JSON_URL = "data/tracks.json";
 
     const GROUP_MAP = {
@@ -142,11 +142,9 @@
         if (!res.ok) throw new Error("HTTP " + res.status);
         const raw = await res.json();
 
-        // 兼容两种数据来源：
-        // - 你提供的格式：[{title, url, key}, ...]
-        // - 简化格式：[{title, url}, ...]
+        // 严格按 {title, url, key} 解析；过滤目录占位
         allTracks = (Array.isArray(raw) ? raw : [])
-          .filter(item => item && item.url)
+          .filter(item => item && item.url && item.key)
           .filter(item => !isDir(item))
           .map((item) => {
             const prefix = getTopPrefix(item);
@@ -157,7 +155,7 @@
             return {
               title,
               url: item.url,
-              key: item.key || "",
+              key: item.key,
               group
             };
           });
@@ -217,7 +215,7 @@
       currentIndex = i;
       const t = viewTracks[i];
       if(!t) return;
-      player.src = t.url;
+      player.src = t.url; // 直接使用直链
       player.play().catch(()=>{});
       now.textContent = "正奏： " + (t.title || "") + "  (" + (t.key || t.url) + ")";
       const el = listEl.children[i];
