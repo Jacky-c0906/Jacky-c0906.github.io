@@ -24,7 +24,6 @@
     header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.6)),var(--bg);backdrop-filter:blur(6px);border-bottom:2px solid var(--gold);box-shadow:0 2px 0 rgba(0,0,0,.03)}
     .wrap{max-width:1100px;margin:auto;padding:14px 16px}
     .title{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-    /* 移除 .seal 相关样式与元素 */
     .brand{font-family:"STKaiti","Kaiti SC","KaiTi","Noto Serif SC",serif;font-size:28px;letter-spacing:.1em;color:var(--ink-2)}
     .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
     @media (max-width:900px){.grid{grid-template-columns:1fr}}
@@ -52,7 +51,6 @@
 <body>
   <header>
     <div class="wrap title">
-      <!-- 已删除 <div class="seal">状态</div> -->
       <div class="brand">状态导向音乐</div>
     </div>
   </header>
@@ -69,7 +67,7 @@
 
       <section class="panel">
         <div class="panel-head">
-          <div> </div>
+          <div><!-- 标题留空（原“云琴”已移除） --></div>
           <div class="meta" id="countMeta"></div>
         </div>
         <div class="now" id="nowPlaying">未选曲</div>
@@ -88,9 +86,7 @@
   <footer>注：GitHub 代码页不预览大文件，但此页可正常播放。</footer>
 
   <script>
-    // 严格使用你给定的 JSON 格式与路径
     const JSON_URL = "data/tracks.json";
-
     const GROUP_MAP = {
       "GSMT合成音乐": "GSMT",
       "chen_music": "臣",
@@ -103,13 +99,11 @@
       const p = String(item.url || item.key || "");
       return p.endsWith("/");
     }
-
     function getTopPrefix(item){
       const src = String(item.key || item.url || "");
       const parts = src.replace(/^https?:\/\/[^/]+\//, "").split("/");
       return parts[0] || "";
     }
-
     function getFileName(urlOrKey){
       const s = String(urlOrKey || "");
       const seg = s.split("/").filter(Boolean);
@@ -140,7 +134,6 @@
         if (!res.ok) throw new Error("HTTP " + res.status);
         const raw = await res.json();
 
-        // 严格按 {title, url, key} 解析；过滤目录占位
         allTracks = (Array.isArray(raw) ? raw : [])
           .filter(item => item && item.url && item.key)
           .filter(item => !isDir(item))
@@ -150,12 +143,7 @@
             const title = item.title && item.title.trim()
               ? item.title.trim()
               : getFileName(item.key || item.url);
-            return {
-              title,
-              url: item.url,
-              key: item.key,
-              group
-            };
+            return { title, url: item.url, key: item.key, group };
           });
 
         renderFilters();
@@ -213,7 +201,7 @@
       currentIndex = i;
       const t = viewTracks[i];
       if(!t) return;
-      player.src = t.url; // 直接使用直链
+      player.src = t.url;
       player.play().catch(()=>{});
       now.textContent = "正奏： " + (t.title || "") + "  (" + (t.key || t.url) + ")";
       const el = listEl.children[i];
