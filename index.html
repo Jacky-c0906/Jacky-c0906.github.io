@@ -24,7 +24,7 @@
     header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.6)),var(--bg);backdrop-filter:blur(6px);border-bottom:2px solid var(--gold);box-shadow:0 2px 0 rgba(0,0,0,.03)}
     .wrap{max-width:1100px;margin:auto;padding:14px 16px}
     .title{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-    .seal{width:40px;height:40px;border:2px solid var(--ink);color:var(--ink);display:grid;place-items:center;font-weight:700;letter-spacing:.2em;background:linear-gradient(135deg,rgba(0,0,0,.06),transparent);border-radius:6px}
+    /* 移除 .seal 相关样式与元素 */
     .brand{font-family:"STKaiti","Kaiti SC","KaiTi","Noto Serif SC",serif;font-size:28px;letter-spacing:.1em;color:var(--ink-2)}
     .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
     @media (max-width:900px){.grid{grid-template-columns:1fr}}
@@ -52,10 +52,8 @@
 <body>
   <header>
     <div class="wrap title">
-      <div class="seal">状态</div>
-      <div>
-        <div class="brand">状态导向音乐</div>
-      </div>
+      <!-- 已删除 <div class="seal">状态</div> -->
+      <div class="brand">状态导向音乐</div>
     </div>
   </header>
 
